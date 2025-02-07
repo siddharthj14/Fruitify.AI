@@ -7,7 +7,7 @@ const Button = ({text,outlined}) => {
             ${
               outlined
                 ? "cursor-pointer border border-white text-white bg-transparent hover:bg-white hover:text-black"
-                : "cursor-pointer bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-700 hover:to-blue-500"
+                : "cursor-pointer bg-gradient-to-r from-green-500 to-green-700 text-white hover:from-green-700 hover:to-green-500"
             }`}
     >
       {text}
