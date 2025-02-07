@@ -30,10 +30,13 @@ const Navbar = () => {
           >
             Contact
           </a>
+          <a
+            href="/login"
+            className="text-green-500 hover:text-white hover:underline transition-colors duration-300"
+          >
+            Log in
+          </a>
           
-          <Link to="/login">
-          <Button text="Log in" className="ml-4" />
-          </Link>
           <Link to="/signup">
           <Button text="Sign up" className="ml-4" />
           </Link>
