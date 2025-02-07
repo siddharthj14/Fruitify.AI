@@ -41,7 +41,7 @@ const ContactUs = () => {
               <div className="space-y-4 text-gray-300">
                 <div className="flex items-center space-x-3">
                   <Mail className="w-5 h-5 text-green-400" />
-                  <span>contact@ainewsanchor.com</span>
+                  <span>contact@fruitifyai.com</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Phone className="w-5 h-5 text-green-400" />
