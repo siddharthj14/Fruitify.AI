@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Hero = () => {
   const navigate = useNavigate();
   return (
-    <div className="text-center pt-23 pb-45 px-4">
+    <div className="text-center pt-21 pb-45 px-4">
       <h2 className="text-8xl font-bold mb-15 bg-gradient-to-r from-cyan-200 to-green-600 text-transparent bg-clip-text">
       Revolutionizing Export Fruit Quality Control
       </h2>
@@ -14,7 +14,7 @@ const Hero = () => {
       Meet FruitifyAI, the next-gen automated inspection system designed to enhance quality assessment with AI-driven defect detection, seamless integration, and real-time sorting for optimized export standards.
 
       </p>
-      <div className="mt-20 space-x-4">
+      <div className="mt-15 space-x-4">
         <Link to="/analyse">
           <button className="cursor-pointer px-6 py-3 bg-gradient-to-r from-green-500 to-green-700 text-white hover:from-green-700 hover:to-green-500 rounded-3xl font-semibold transition-all duration-300">
             Analyse
