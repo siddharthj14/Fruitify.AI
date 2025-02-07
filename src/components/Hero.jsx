@@ -15,9 +15,9 @@ const Hero = () => {
 
       </p>
       <div className="mt-20 space-x-4">
-        <Link to="/demo">
+        <Link to="/analyse">
           <button className="cursor-pointer px-6 py-3 bg-gradient-to-r from-green-500 to-green-700 text-white hover:from-green-700 hover:to-green-500 rounded-3xl font-semibold transition-all duration-300">
-            Get Started
+            Analyse
           </button>
         </Link>
         <Button text="Learn More" outlined={true} />
