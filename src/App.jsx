@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import LandingPage from "./pages/LandingPage";
 import WebcamAnalysisPage from "./pages/WebCamAnalysisPage";
+import { LoginPage, SignupPage } from "./pages/Login";
 
 export default function App() {
   return (
@@ -12,6 +13,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/analyse" element={<WebcamAnalysisPage/>}/>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
 
         </Routes>
       </div>
