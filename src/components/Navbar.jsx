@@ -30,7 +30,13 @@ const Navbar = () => {
           >
             Contact
           </a>
-          <Button text="Get Started" className="ml-4" />
+          <a
+            href="#contact"
+            className="hover:text-green-400 transition-colors duration-300 underline"
+          >
+            Login
+          </a>
+          <Button text="Sign up" className="ml-4" />
         </div>
       </div>
     </nav>
