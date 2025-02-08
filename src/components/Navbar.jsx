@@ -1,8 +1,19 @@
 import React from "react";
+import { useState,useEffect } from "react";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({auth,setAuth}) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    setIsAuthenticated(!!token);
+  }, [auth]);
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    setIsAuthenticated(false);
+  };
+
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
       <div className="flex flex-wrap justify-between items-center p-4 max-w-7xl mx-auto">
@@ -30,7 +41,15 @@ const Navbar = () => {
           >
             Contact
           </a>
-          <a
+          
+
+         { isAuthenticated ? (
+    <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded">
+      Logout
+    </button>
+  ) : (
+    <>
+    <a
             href="/login"
             className="text-green-500 hover:text-white hover:underline transition-colors duration-300"
           >
@@ -39,7 +58,9 @@ const Navbar = () => {
           
           <Link to="/signup">
           <Button text="Sign up" className="ml-4" />
-          </Link>
+          </Link></>
+    
+  )}
         </div>
       </div>
     </nav>

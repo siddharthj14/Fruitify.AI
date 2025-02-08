@@ -1,16 +1,40 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { User, Mail, Lock } from 'lucide-react';
+import axios from 'axios';
 
-const LoginPage = () => {
+const LoginPage = ({setAuth}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     // Add your login logic here
-    console.log('Login:', { email, password });
+    try {
+        console.log('Login:', { email, password });
+
+        const response = await axios.post('http://localhost:3000/users/login', {
+            email,
+            password
+        });
+
+        if (response.data.token) {
+            localStorage.setItem('authToken', response.data.token);
+            
+            console.log('Login successful, token stored:', response.data.token);
+            setAuth(response.data.token)
+            navigate('/analyse')
+            return response.data.token;
+        } else {
+            console.error('No token received');
+            return null;
+        }
+    } catch (error) {
+        console.error('Login failed:', error.response?.data || error.message);
+        return null;
+    }
+
   };
 
   return (
@@ -62,16 +86,34 @@ const LoginPage = () => {
   );
 };
 
-const SignupPage = () => {
+const SignupPage = ({setAuth}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     // Add your signup logic here
-    console.log('Signup:', { name, email, password });
+    try {
+        console.log('Signup:', { name, email, password });
+
+        const response = await axios.post("http://localhost:3000/users", { name, email, password });
+
+        if (response.data.token) {
+            localStorage.setItem('authToken', response.data.token);
+            console.log('Signup successful, token stored:', response.data.token);
+            setAuth(response.data.token)
+            navigate('/analyse')
+            return response.data.token;
+        } else {
+            console.error('No token received');
+            return null;
+        }
+    } catch (error) {
+        console.error('Signup failed:', error.response?.data || error.message);
+        return null;
+    }
   };
 
   return (
