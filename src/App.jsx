@@ -5,6 +5,7 @@ import LandingPage from "./pages/LandingPage";
 import WebcamAnalysisPage from "./pages/WebCamAnalysisPage";
 import { LoginPage, SignupPage } from "./pages/Login";
 import { useState } from "react";
+import FileUpload from "./pages/Test";
 
 export default function App() {
   const [auth,setAuth]=useState(null)
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/analyse" element={<WebcamAnalysisPage/>}/>
           <Route path="/login" element={<LoginPage setAuth={setAuth} />} />
           <Route path="/signup" element={<SignupPage setAuth={setAuth} />} />
+          <Route path="/test" element={<FileUpload  />} />
 
         </Routes>
       </div>
