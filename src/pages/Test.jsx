@@ -45,6 +45,8 @@ export default function Test() {
     canvas.height = videoRef.current.videoHeight;
 
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const imageUrl = canvas.toDataURL("image/jpeg");
+    setCapturedImage(imageUrl); // Update state with the captured image
 
     canvas.toBlob(async (blob) => {
       if (!blob) return;
