@@ -14,7 +14,7 @@ const LoginPage = ({setAuth}) => {
     try {
         console.log('Login:', { email, password });
 
-        const response = await axios.post('http://localhost:3000/users/login', {
+        const response = await axios.post('https://bn-y5wa.onrender.com/users/login', {
             email,
             password
         });
@@ -98,7 +98,7 @@ const SignupPage = ({setAuth}) => {
     try {
         console.log('Signup:', { name, email, password });
 
-        const response = await axios.post("http://localhost:3000/users", { name, email, password });
+        const response = await axios.post("https://bn-y5wa.onrender.com/users", { name, email, password });
 
         if (response.data.token) {
             localStorage.setItem('authToken', response.data.token);
