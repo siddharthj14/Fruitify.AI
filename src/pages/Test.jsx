@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Camera, StopCircle, Upload } from "lucide-react";
 
 export default function Test() {
   const [message, setMessage] = useState("");
@@ -7,7 +8,6 @@ export default function Test() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // Start the camera
   const startCamera = async () => {
     try {
       const userStream = await navigator.mediaDevices.getUserMedia({
@@ -23,7 +23,6 @@ export default function Test() {
     }
   };
 
-  // Stop the camera
   const stopCamera = () => {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
@@ -34,7 +33,6 @@ export default function Test() {
     }
   };
 
-  // Capture an image from the camera
   const captureImage = async () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -46,7 +44,7 @@ export default function Test() {
 
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
     const imageUrl = canvas.toDataURL("image/jpeg");
-    setCapturedImage(imageUrl); // Update state with the captured image
+    setCapturedImage(imageUrl);
 
     canvas.toBlob(async (blob) => {
       if (!blob) return;
@@ -82,74 +80,93 @@ export default function Test() {
   };
 
   return (
-    <div className="text-center py-10">
-      <h2 className="text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-200 to-green-600 text-transparent bg-clip-text">
-        Fruit Quality Analysis
-      </h2>
-      <p className="text-gray-200 mb-10 max-w-xl mx-auto text-lg">
-        Real-time fruit quality assessment using advanced AI technology. Start
-        your analysis by enabling the camera.
-      </p>
-      <div className="p-6 border rounded-2xl shadow-lg max-w-md mx-auto bg-white dark:bg-gray-900 text-center">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-          Live Camera Upload
-        </h2>
-        <div className="relative w-full h-64 border rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center space-y-6 mb-12">
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent animate-gradient">
+            Fruit Quality Analysis
+          </h1>
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            Experience real-time fruit quality assessment powered by advanced AI technology.
+            Our system provides instant analysis for optimal freshness detection.
+          </p>
         </div>
-        <canvas ref={canvasRef} className="hidden" />
-        <div className="flex flex-col sm:flex-row justify-center gap-3 mt-4">
-          <button
-            onClick={startCamera}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition duration-300 shadow-md cursor-pointer"
-          >
-            Start Camera
-          </button>
-          <button
-            onClick={stopCamera}
-            className={`cursor-pointer px-4 py-2 rounded-lg transition duration-300 shadow-md ${
-              stream
-                ? "bg-red-500 hover:bg-red-600 text-white"
-                : "bg-gray-400 text-gray-200 cursor-not-allowed"
-            }`}
-            disabled={!stream}
-          >
-            Stop Camera
-          </button>
-          <button
-            onClick={captureImage}
-            className={`cursor-pointer px-4 py-2 rounded-lg transition duration-300 shadow-md ${
-              stream
-                ? "bg-blue-500 hover:bg-blue-600 text-white"
-                : "bg-gray-400 text-gray-200 cursor-not-allowed"
-            }`}
-            disabled={!stream}
-          >
-            Capture & Upload
-          </button>
-        </div>
-        <div className="mt-4 p-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm">
-          {capturedImage && (
-            <div className="mt-4">
-              <h3 className="text-sm font-medium mb-1">Captured Image:</h3>
-              <img
-                src={capturedImage}
-                alt="Captured Preview"
-                className="rounded-lg shadow-lg"
-              />
+
+        <div className="bg-gray-800 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-lg border border-gray-700">
+          <div className="p-8">
+            {/* Adjusted the video container size */}
+            <div className="max-w-2xl mx-auto">
+              <div className="relative aspect-video rounded-2xl overflow-hidden bg-black mb-6">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <canvas ref={canvasRef} className="hidden" />
+              </div>
             </div>
-          )}
-          {message && <h1 className="font-medium">{message.message}</h1>}
-          {message && (
-            <h1 className="font-semibold text-lg text-green-600 dark:text-green-400">
-              {message.predicted_fruit_freshness}
-            </h1>
-          )}
+
+            <div className="flex flex-wrap gap-4 justify-center mb-8">
+              <button
+                onClick={startCamera}
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-emerald-500/25"
+              >
+                <Camera size={20} />
+                Start Camera
+              </button>
+              <button
+                onClick={stopCamera}
+                disabled={!stream}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg ${
+                  stream
+                    ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:shadow-red-500/25"
+                    : "bg-gray-600 cursor-not-allowed"
+                }`}
+              >
+                <StopCircle size={20} />
+                Stop Camera
+              </button>
+              <button
+                onClick={captureImage}
+                disabled={!stream}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg ${
+                  stream
+                    ? "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 hover:shadow-blue-500/25"
+                    : "bg-gray-600 cursor-not-allowed"
+                }`}
+              >
+                <Upload size={20} />
+                Analyze Fruit
+              </button>
+            </div>
+
+            {(capturedImage || message) && (
+              <div className="bg-gray-700/50 rounded-2xl p-6 backdrop-blur-sm border border-gray-600">
+                <div className="flex flex-col md:flex-row items-center gap-6">
+                  {capturedImage && (
+                    <div className="w-32 h-32 rounded-xl overflow-hidden shadow-lg">
+                      <img
+                        src={capturedImage}
+                        alt="Captured Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 text-center md:text-left">
+                    {message && (
+                      <>
+                        <p className="text-gray-300 mb-2">{message.message}</p>
+                        <p className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                          {message.predicted_fruit_freshness}
+                        </p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
