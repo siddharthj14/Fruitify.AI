@@ -1,16 +1,19 @@
 import React, { useState, useRef } from "react";
 
-export default function CameraUpload() {
+export default function Test() {
   const [message, setMessage] = useState("");
   const [stream, setStream] = useState(null);
+  const [capturedImage, setCapturedImage] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
   // Start the camera
   const startCamera = async () => {
     try {
-      const userStream = await navigator.mediaDevices.getUserMedia({ video: true });
-      setStream(userStream); // Save stream reference
+      const userStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+      });
+      setStream(userStream);
       if (videoRef.current) {
         videoRef.current.srcObject = userStream;
       }
@@ -23,88 +26,129 @@ export default function CameraUpload() {
   // Stop the camera
   const stopCamera = () => {
     if (stream) {
-      stream.getTracks().forEach(track => track.stop()); // Stop all tracks
+      stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
     if (videoRef.current) {
-      videoRef.current.srcObject = null; // Clear video feed
+      videoRef.current.srcObject = null;
     }
   };
 
   // Capture an image from the camera
   const captureImage = async () => {
-  if (!videoRef.current || !canvasRef.current) return;
+    if (!videoRef.current || !canvasRef.current) return;
 
-  const canvas = canvasRef.current;
-  const context = canvas.getContext("2d");
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
 
-  // Set canvas size to match video
-  canvas.width = videoRef.current.videoWidth;
-  canvas.height = videoRef.current.videoHeight;
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
 
-  // Draw the video frame onto the canvas
-  context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
-  // Convert the image to a Blob
-  canvas.toBlob(async (blob) => {
-    if (!blob) return;
-    const formData = new FormData();
-    formData.append("file", blob, "captured_image.jpg");
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      const formData = new FormData();
+      formData.append("file", blob, "captured_image.jpg");
 
-    try {
-      const response = await fetch("http://127.0.0.1:5000/track", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json(); // Parse response as JSON
-      if (response.ok) {
-        setMessage({
-          message: data.message,
-          predicted_fruit_freshness: data.predicted_fruit_freshness,
+      try {
+        const response = await fetch("http://127.0.0.1:5000/track", {
+          method: "POST",
+          body: formData,
         });
-      } else {
-        setMessage({ message: `Error: ${data.message || "Unknown error"}`, predicted_fruit_freshness: "" });
-      }
-    } catch (error) {
-      setMessage({ message: "Failed to connect to the backend!", predicted_fruit_freshness: "" });
-      console.error(error);
-    }
-  }, "image/jpeg");
-};
 
+        const data = await response.json();
+        if (response.ok) {
+          setMessage({
+            message: data.message,
+            predicted_fruit_freshness: data.predicted_fruit_freshness,
+          });
+        } else {
+          setMessage({
+            message: `Error: ${data.message || "Unknown error"}`,
+            predicted_fruit_freshness: "",
+          });
+        }
+      } catch (error) {
+        setMessage({
+          message: "Failed to connect to the backend!",
+          predicted_fruit_freshness: "",
+        });
+        console.error(error);
+      }
+    }, "image/jpeg");
+  };
 
   return (
-    <div className="p-4 border rounded-lg shadow-md max-w-sm mx-auto">
-      <h2 className="text-lg font-semibold mb-2">Live Camera Upload</h2>
-      <video ref={videoRef} autoPlay playsInline className="w-full mb-2" />
-      <canvas ref={canvasRef} className="hidden" />
-      <div className="flex gap-2">
-        <button
-          onClick={startCamera}
-          className="bg-green-500 text-white px-4 py-2 rounded-md"
-        >
-          Start Camera
-        </button>
-        <button
-          onClick={stopCamera}
-          className="bg-red-500 text-white px-4 py-2 rounded-md"
-          disabled={!stream} // Disable if camera is off
-        >
-          Stop Camera
-        </button>
-        <button
-          onClick={captureImage}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md"
-          disabled={!stream} // Disable if camera is off
-        >
-          Capture & Upload
-        </button>
-      </div>
-      <div>
-
-      {message && <h1 className="mt-2 text-sm text-gray-700">{message.message}</h1>}
-      {message && <h1 className="mt-2 text-sm text-gray-700">{message.predicted_fruit_freshness}</h1>}
+    <div className="text-center py-10">
+      <h2 className="text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-200 to-green-600 text-transparent bg-clip-text">
+        Fruit Quality Analysis
+      </h2>
+      <p className="text-gray-200 mb-10 max-w-xl mx-auto text-lg">
+        Real-time fruit quality assessment using advanced AI technology. Start
+        your analysis by enabling the camera.
+      </p>
+      <div className="p-6 border rounded-2xl shadow-lg max-w-md mx-auto bg-white dark:bg-gray-900 text-center">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+          Live Camera Upload
+        </h2>
+        <div className="relative w-full h-64 border rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700">
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+        <canvas ref={canvasRef} className="hidden" />
+        <div className="flex flex-col sm:flex-row justify-center gap-3 mt-4">
+          <button
+            onClick={startCamera}
+            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition duration-300 shadow-md cursor-pointer"
+          >
+            Start Camera
+          </button>
+          <button
+            onClick={stopCamera}
+            className={`cursor-pointer px-4 py-2 rounded-lg transition duration-300 shadow-md ${
+              stream
+                ? "bg-red-500 hover:bg-red-600 text-white"
+                : "bg-gray-400 text-gray-200 cursor-not-allowed"
+            }`}
+            disabled={!stream}
+          >
+            Stop Camera
+          </button>
+          <button
+            onClick={captureImage}
+            className={`cursor-pointer px-4 py-2 rounded-lg transition duration-300 shadow-md ${
+              stream
+                ? "bg-blue-500 hover:bg-blue-600 text-white"
+                : "bg-gray-400 text-gray-200 cursor-not-allowed"
+            }`}
+            disabled={!stream}
+          >
+            Capture & Upload
+          </button>
+        </div>
+        <div className="mt-4 p-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm">
+          {capturedImage && (
+            <div className="mt-4">
+              <h3 className="text-sm font-medium mb-1">Captured Image:</h3>
+              <img
+                src={capturedImage}
+                alt="Captured Preview"
+                className="rounded-lg shadow-lg"
+              />
+            </div>
+          )}
+          {message && <h1 className="font-medium">{message.message}</h1>}
+          {message && (
+            <h1 className="font-semibold text-lg text-green-600 dark:text-green-400">
+              {message.predicted_fruit_freshness}
+            </h1>
+          )}
+        </div>
       </div>
     </div>
   );
