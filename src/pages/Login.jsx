@@ -24,7 +24,7 @@ const LoginPage = ({setAuth}) => {
             
             console.log('Login successful, token stored:', response.data.token);
             setAuth(response.data.token)
-            navigate('/analyse')
+            navigate('/test')
             return response.data.token;
         } else {
             console.error('No token received');
@@ -104,7 +104,7 @@ const SignupPage = ({setAuth}) => {
             localStorage.setItem('authToken', response.data.token);
             console.log('Signup successful, token stored:', response.data.token);
             setAuth(response.data.token)
-            navigate('/analyse')
+            navigate('/test')
             return response.data.token;
         } else {
             console.error('No token received');
